@@ -1,0 +1,8 @@
+<h2>Select Ethnicity</h2>
+{% if gender == 'male' %}
+  <a href="{% url 'compare_faces' 'asianmale' %}">Asian</a><br>
+  <a href="{% url 'compare_faces' 'male' %}">US</a>
+{% else %}
+  <a href="{% url 'compare_faces' 'asianfemale' %}">Asian</a><br>
+  <a href="{% url 'compare_faces' 'female' %}">US</a>
+{% endif %}
