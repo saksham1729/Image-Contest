@@ -1,0 +1,47 @@
+{% load static %}
+
+<style>
+    .image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px; /* space between images */
+      margin-top: 40px;
+    }
+  
+    .image-container img {
+      width: 700px;
+      height: 700px;
+      cursor: pointer;
+    }
+  
+    h2 {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+
+<h2>Select the one which looks Good</h2>
+
+<div class="image-container">
+    <img id="img_a" src="{% static '/images/' %}{{ folder }}/{{ img_a }}" width="500" height="500" onclick="vote('img_a')">
+    <img id="img_b" src="{% static '/images/' %}{{ folder }}/{{ img_b }}" width="500" height="500"  onclick="vote('img_b')">
+</div>
+
+<script>
+function vote(winner) {
+    fetch("{% url 'vote' %}", {
+        method: "POST",
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        body: new URLSearchParams({winner, folder: '{{ folder }}'})
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (winner === "img_a") {
+            document.getElementById("img_b").src = "/static/images/{{ folder }}/" + data.new_image;
+        } else {
+            document.getElementById("img_a").src = "/static/images/{{ folder }}/" + data.new_image;
+        }
+    });
+}
+</script>
